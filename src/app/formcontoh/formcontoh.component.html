@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <form [formGroup]="pinjamanForm" (ngSubmit)="onSubmit()">
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="caraHitungAngsuran">Cara Hitung Angsuran</label>
+        <c-col [sm]="6">
+          <select aria-label="caraHitungAngsuran" formControlName="caraHitungAngsuran" cSelect>
+            <option value="0">PAT</option>
+            <option value="1">PPT</option>
+            <option value="2">FLAT</option>
+            <option value="3">SLIDING</option>
+          </select>
+        </c-col>
+      </c-row>
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="caraBayarAngsuran">Cara Bayar Angsuran</label>
+        <c-col [sm]="6">
+          <select aria-label="caraBayarAngsuran" formControlName="caraBayarAngsuran" cSelect>
+            <option value="1">In-Arrear</option>
+            <option value="2">In-Advance</option>
+          </select>
+        </c-col>
+      </c-row>
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="pokokPinjaman">Pokok Pinjaman</label>
+        <c-col [sm]="6">
+          <input cFormControl id="pokokPinjaman" formControlName="pokokPinjaman" type="number" />
+        </c-col>
+      </c-row>
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="tanggalValuta">Tanggal Valuta</label>
+        <c-col [sm]="2">
+          <input cFormControl id="tanggalValuta" formControlName="tanggalValuta" type="date" />
+        </c-col>
+      </c-row>
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="jangkaWaktu">Jangka Waktu</label>
+        <c-col [sm]="2">
+          <input cFormControl id="jangkaWaktuThn" formControlName="jangkaWaktuThn" type="number" placeholder="Tahun" min="0"/>
+        </c-col>
+        <c-col [sm]="2">
+          <input cFormControl id="jangkaWaktuBln" formControlName="jangkaWaktuBln" type="number" placeholder="Bulan" min="0"/>
+        </c-col>
+      </c-row>
+      <c-row class="mb-3">
+        <label cLabel="col" cCol [sm]="2" for="sukuBungaEfektif">Suku Bunga Efektif</label>
+        <c-col [sm]="1">
+          <input cFormControl id="sukuBungaEfektif" formControlName="sukuBungaEfektif" type="number" step="0.01" min="0" />
+        </c-col>
+        <c-col [sm]="2">
+          <h3>% p.a</h3>
+        </c-col>
+        <c-col [sm]="3"></c-col>
+      </c-row>
+      <button cButton type="submit">Submit</button>
+    </form>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive" style="height: 390px; overflow-y: auto;">
+              <table cTable hover striped borderless *ngIf="hasilPerhitungan.length > 0">
+                <thead style="position: sticky; top: 0; z-index: 1; background: white;">
+                  <tr>
+                    <th>Ke</th>
+                    <th>Tanggal</th>
+                    <th>Bunga</th>
+                    <th>Pokok</th>
+                    <th>Total Angsuran</th>
+                    <th>Saldo Akhir</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of hasilPerhitungan.slice(0, -1)">
+                    <td>{{ item.ke }}</td>
+                    <td>{{ item.tanggal }}</td>
+                    <td style="text-align: right;">{{ item.bunga }}</td>
+                    <td style="text-align: right;">{{ item.pokok }}</td>
+                    <td style="text-align: right;">{{ item.totalAngsuran }}</td>
+                    <td style="text-align: right;">{{ item.saldoAkhir }}</td>
+                  </tr>
+                </tbody>
+                <tfoot style="position: sticky; bottom: 0; z-index: 1; background: white;">
+                  <tr>
+                    <td></td>
+                    <td>Total</td>
+                    <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].bunga }}</td>
+                    <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].pokok }}</td>
+                    <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].totalAngsuran }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="hasilPerhitungan.length > 0">
+        <button class="btn btn-primary" (click)="generatePDF()">Export To PDF</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>

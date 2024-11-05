@@ -1,0 +1,28 @@
+    <div id="header">
+      <h1><img src="LogoBRPSupra.png" alt="">BPR SUPRA</h1>
+      <ul>
+          <li><a [routerLink]="['/']" >Home </a></li> 
+          <li><a [routerLink]="['/contoh']" >Data Angsuran</a></li>
+                 
+      </ul>
+    </div>   
+     
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">Navigasi</div>
+        <div class="list-group list-group-flush">
+          <a href="/" class="list-group-item list-group-item-action">Home</a>
+          <a href="/contoh" class="list-group-item list-group-item-action">Data Angsuran</a>
+        </div>
+      </div>
+
+    
+        <!-- /#sidebar-wrapper -->
+    
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+  

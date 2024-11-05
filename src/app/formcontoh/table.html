@@ -1,0 +1,33 @@
+<table cTable [responsive]="true" responsive="sm">
+    <!-- *ngIf="hasilPerhitungan.length > 0" -->
+    <thead style="position: sticky; top: 0; z-index: 1; background: white;">
+      <tr>
+        <th scope="col">Ke</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Bunga</th>
+        <th scope="col">Pokok</th>
+        <th scope="col">Total Angsuran</th>
+        <th scope="col">Saldo Akhir</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of hasilPerhitungan.slice(0, -1)">
+        <td scope="row">{{ item.ke }}</td>
+        <td>{{ item.tanggal }}</td>
+        <td style="text-align: right;">{{ item.bunga }}</td>
+        <td style="text-align: right;">{{ item.pokok }}</td>
+        <td style="text-align: right;">{{ item.totalAngsuran }}</td>
+        <td style="text-align: right;">{{ item.saldoAkhir }}</td>
+      </tr>
+    </tbody>
+    <tfoot style="position: sticky; bottom: 0; z-index: 1; background: white;">
+      <tr>
+        <td scope="row"></td>
+        <td>Total</td>
+        <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].bunga }}</td>
+        <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].pokok }}</td>
+        <td style="text-align: right;">{{ hasilPerhitungan[hasilPerhitungan.length - 1].totalAngsuran }}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
