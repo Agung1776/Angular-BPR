@@ -5,7 +5,7 @@
       <c-row class="mb-3">
         <label cLabel="col" cCol [sm]="2" for="caraHitungAngsuran">Cara Hitung Angsuran</label>
         <c-col [sm]="6">
-          <select aria-label="caraHitungAngsuran" formControlName="caraHitungAngsuran" cSelect>
+          <select aria-label="caraHitungAngsuran" formControlName="caraHitungAngsuran" required cSelect>
             <option value="0">PAT</option>
             <option value="1">PPT</option>
             <option value="2">FLAT</option>
@@ -16,7 +16,7 @@
       <c-row class="mb-3">
         <label cLabel="col" cCol [sm]="2" for="caraBayarAngsuran">Cara Bayar Angsuran</label>
         <c-col [sm]="6">
-          <select aria-label="caraBayarAngsuran" formControlName="caraBayarAngsuran" cSelect>
+          <select aria-label="caraBayarAngsuran" formControlName="caraBayarAngsuran" required cSelect>
             <option value="1">In-Arrear</option>
             <option value="2">In-Advance</option>
           </select>
@@ -25,13 +25,13 @@
       <c-row class="mb-3">
         <label cLabel="col" cCol [sm]="2" for="pokokPinjaman">Pokok Pinjaman</label>
         <c-col [sm]="6">
-          <input cFormControl id="pokokPinjaman" formControlName="pokokPinjaman" type="number" />
+          <input cFormControl id="pokokPinjaman" formControlName="pokokPinjaman" type="number" required/>
         </c-col>
       </c-row>
       <c-row class="mb-3">
         <label cLabel="col" cCol [sm]="2" for="tanggalValuta">Tanggal Valuta</label>
         <c-col [sm]="2">
-          <input cFormControl id="tanggalValuta" formControlName="tanggalValuta" type="date" />
+          <input cFormControl id="tanggalValuta" formControlName="tanggalValuta" type="date" required/>
         </c-col>
       </c-row>
       <c-row class="mb-3">
@@ -45,8 +45,8 @@
       </c-row>
       <c-row class="mb-3">
         <label cLabel="col" cCol [sm]="2" for="sukuBungaEfektif">Suku Bunga Efektif</label>
-        <c-col [sm]="1">
-          <input cFormControl id="sukuBungaEfektif" formControlName="sukuBungaEfektif" type="number" step="0.01" min="0" />
+        <c-col [sm]="2">
+          <input cFormControl id="sukuBungaEfektif" formControlName="sukuBungaEfektif" type="number" min="0" required/>
         </c-col>
         <c-col [sm]="2">
           <h3>% p.a</h3>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div *ngIf="hasilPerhitungan.length > 0">
-        <button class="btn btn-primary" (click)="generatePDF()">Export To PDF</button>
+        <button class="btn btn-primary" (click)="generatePDF()">Export To PDF</button> <button class="btn btn-primary" style="margin-left: 10px;" (click)="addLoanInfo()">Save</button>
       </div>
     </div>
   </div>

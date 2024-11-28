@@ -42,7 +42,7 @@ export class PinjamanService {
     let currentDate = new Date(tanggalValuta);
     let sisaPokok = pokokPinjaman;
     const bungaEfBln = bungaEfektif / 1200;
-    const angsBln = Math.round((pokokPinjaman * bungaEfBln) / (1 - Math.pow(1 + bungaEfBln, -totalBulan)));
+    let angsBln = Math.round((pokokPinjaman * bungaEfBln) / (1 - Math.pow(1 + bungaEfBln, -totalBulan)));
   
     let totalBunga = 0;
     let totalPokok = 0;
@@ -51,9 +51,20 @@ export class PinjamanService {
     for (let i = 0; i < totalBulan; i++) {
       currentDate.setMonth(currentDate.getMonth() + (i === 0 && caraBayarAngsuran === 2 ? 0 : 1));
       const formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en-US');
-      const bunga = Math.round(bungaEfBln * sisaPokok);
-      const pokok = Math.round(angsBln - bunga);
-      sisaPokok -= pokok;
+      let bunga = Math.round(bungaEfBln * sisaPokok);
+      let pokok = Math.round(angsBln - bunga);
+      
+      if (i === totalBulan - 1) {
+        const ga = pokokPinjaman - totalPokok;
+        const gap = ga - pokok;        
+        pokok += gap;
+        bunga -= gap;
+        bunga = Math.max(bunga, 0);
+        sisaPokok = 0;
+        angsBln = bunga + pokok;
+      } else {
+        sisaPokok -= pokok;
+      }
   
       totalBunga += bunga;
       totalPokok += pokok;
@@ -104,10 +115,14 @@ export class PinjamanService {
       currentDate.setMonth(currentDate.getMonth() + (i === 0 && caraBayarAngsuran === 2 ? 0 : 1));
       const formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en-US');
       const daysInMonth = Math.round((currentDate.getTime() - new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate()).getTime()) / (1000 * 60 * 60 * 24));
-      const bunga = Math.round(bungaEfHari * sisaPokok * daysInMonth);
-      const pokok = i === totalBulan - 1 ? sisaPokok : 0;
+      let bunga = Math.round(bungaEfHari * sisaPokok * daysInMonth);
+      let pokok = i === totalBulan - 1 ? sisaPokok : 0;
       sisaPokok -= pokok;
-  
+      
+      if (i === totalBulan - 1) {
+        sisaPokok = 0;
+      }
+
       totalBunga += bunga;
       totalPokok += pokok;
       totalAngsuran += (pokok + bunga);

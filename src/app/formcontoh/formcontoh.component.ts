@@ -7,15 +7,28 @@ import { CommonModule } from '@angular/common';
 import jsPDF from 'jspdf';
 import { LoanInfoService } from '../loan-info.service';
 import autoTable from 'jspdf-autotable'
+import { LoanInstallmentService } from '../loan-installment.service';
+
+
 export interface LoanInfo {
   id?: number;
   amortization: string;
-  tenorMonths: number;
-  interestRate: number;
+  tenor_months: number;
+  interest_rate: number;
   amount: number;
-  paymentMethod: string;
-  disbursementDate: string;
-  maturityDate: string;
+  payment_method: string;
+  disbursement_date: string;
+  maturity_date: string;
+}
+export interface LoanInstallment { 
+  id: number; 
+  info_id: number; 
+  number: number; 
+  maturity_date: string; 
+  principal: number; 
+  interest: number; 
+  paid_instalment: number; 
+  principal_balance: number;
 }
 
 @Component({
@@ -33,6 +46,7 @@ export class FormcontohComponent implements OnInit {
   pinjamanForm!: FormGroup;
   hasilPerhitungan: any[] = [];
   LoanInfoService = inject(LoanInfoService);
+  LoanInstallmentService = inject(LoanInstallmentService);
   isFormVisible = true;
   totalBunga = 0;
   totalPokok = 0;
@@ -87,25 +101,59 @@ export class FormcontohComponent implements OnInit {
       this.hasilPerhitungan = this.pinjamanService.hitungPinjaman(jangkaWaktuThn, jangkaWaktuBln, tanggalValuta, pokokPinjaman, sukuBungaEfektif, hitungAngsuran, bayarAngsuran);
       console.log('Calculation Result:', this.hasilPerhitungan);
       this.calculateTotals();
-      const tenorMonths = (parseInt(jangkaWaktuThn, 10) || 0) * 12 + (parseInt(jangkaWaktuBln, 10) || 0);
-      const maturityDate = this.calculateMaturityDate(tanggalValuta, tenorMonths);
-      const loanInfo: LoanInfo = {
-        amortization: this.getAmortizationValue(caraHitungAngsuran),
-        tenorMonths: tenorMonths,
-        interestRate: parseFloat(parseFloat(sukuBungaEfektif).toFixed(2)), 
-        amount: parseFloat(pokokPinjaman), 
-        paymentMethod: this.getPaymentMethodValue(caraBayarAngsuran),
-        disbursementDate: tanggalValuta,
-        maturityDate: maturityDate
-      };
-      console.log(loanInfo);
-      this.LoanInfoService.createLoanInfo(loanInfo).subscribe(response => {
-        console.log('Loan info submitted successfully', response);
-      }, error => {
-        console.error('Error submitting loan info', error);
-      });
     }
   }
+
+  addLoanInfo(): void {
+    const { jangkaWaktuThn, jangkaWaktuBln, tanggalValuta, pokokPinjaman, sukuBungaEfektif, caraHitungAngsuran, caraBayarAngsuran } = this.pinjamanForm.value;
+    const tenorMonths = (parseInt(jangkaWaktuThn, 10) || 0) * 12 + (parseInt(jangkaWaktuBln, 10) || 0);
+    const maturityDate = this.calculateMaturityDate(tanggalValuta, tenorMonths);
+  
+    const loanInfo: LoanInfo = {
+      amortization: this.getAmortizationValue(caraHitungAngsuran),
+      tenor_months: tenorMonths,
+      interest_rate: parseFloat(parseFloat(sukuBungaEfektif).toFixed(2)),
+      amount: parseFloat(pokokPinjaman),
+      payment_method: this.getPaymentMethodValue(caraBayarAngsuran),
+      disbursement_date: tanggalValuta,
+      maturity_date: maturityDate
+    };
+    console.log(loanInfo);
+  
+    this.LoanInfoService.createLoanInfo(loanInfo).subscribe(response => {
+      console.log('Loan info submitted successfully', response);
+      this.addLoanInstallments(response);
+      alert('Data Tersimpan');
+    }, error => {
+      console.error('Error submitting loan info', error);
+      alert('Ada masalah.');
+    });
+  }
+  
+
+  addLoanInstallments(loanInfo: LoanInfo): void { 
+    this.hasilPerhitungan.slice(0, -1).forEach((hasil) => { 
+      const newInstallment: LoanInstallment = { 
+        id: 0, 
+        info_id: loanInfo.id!, 
+        number: Number(hasil.ke), 
+        maturity_date: hasil.tanggal, 
+        principal: Number(hasil.pokok.replace(/\./g, '').replace(/,/g, '')), 
+        interest: Number(hasil.bunga.replace(/\./g, '').replace(/,/g, '')), 
+        paid_instalment: Number(hasil.totalAngsuran.replace(/\./g, '').replace(/,/g, '')), 
+        principal_balance: Number(hasil.saldoAkhir.replace(/\./g, '').replace(/,/g, ''))
+      }; 
+      console.log(newInstallment);
+      this.LoanInstallmentService.createLoanInstallment(newInstallment).subscribe( 
+        (data) => { 
+          console.log('Loan installment added successfully', data); 
+        }, 
+          (error) => { 
+            console.error('Error adding loan installment', error); 
+          } 
+        ); 
+      }); 
+    }
 
   calculateMaturityDate(startDate: string, tenorMonths: number): string {
     const start = new Date(startDate);

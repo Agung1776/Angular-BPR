@@ -1,1 +1,35 @@
-<p>home works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+           <div class="table-responsive">
+                <table cTable striped >  
+                    <thead style="position: sticky; top: 0; z-index: 1; background: white;">
+                        <tr>
+                            <th scope="col" style="cursor: pointer;" (click)="sortBy('id')">ID</th>
+                            <th scope="col" style="cursor: pointer;" (click)="sortBy('disbursement_date')">Tanggal Valuta</th>
+                            <th scope="col" style="cursor: pointer;" (click)="sortBy('maturity_date')">Tanggal Akhir Valuta</th>
+                            <th scope="col" style="cursor: pointer;" (click)="sortBy('interest_rate')">Bunga</th>
+                            <th scope="col">Metode Pembayaran</th>
+                            <th scope="col">Cara Hitung Angsuran</th>
+                            <th scope="col" style="cursor: pointer;" (click)="sortBy('tenor_months')">Lama Cicilan</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let loan of loanInfos">
+                            <td>{{loan.id}}</td>
+                            <td>{{loan.disbursement_date}}</td>
+                            <td>{{loan.maturity_date}}</td>
+                            <td>{{loan.interest_rate}}%p.a.</td>
+                            <td>{{loan.payment_method}}</td>
+                            <td>{{loan.amortization}}</td>
+                            <td>{{loan.tenor_months}} Bulan</td>
+                            <td><button cButton (click)="goToLoanDetail(loan.id)">Detail</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>   
+    </div>
+</div>

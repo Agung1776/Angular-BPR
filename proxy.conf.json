@@ -3,8 +3,6 @@
     "target": "http://203.100.57.66:8180",
     "secure": false,
     "changeOrigin": true,
-    "pathRewrite": {
-      "^/api": "/api"
-    }
-  }
+    "logLevel": "debug"
+ }
 }

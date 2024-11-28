@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import { FormcontohComponent } from './formcontoh/formcontoh.component';
+import { LoanDetailComponent } from './loan-detail/loan-detail.component';
 
 const routeConfig: Routes = [
     {
@@ -13,5 +14,6 @@ const routeConfig: Routes = [
       component: FormcontohComponent,
       title: 'Contoh',
     },
+    { path: 'loan-detail/:id', component: LoanDetailComponent }
   ];
   export default routeConfig;

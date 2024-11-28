@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PinjamanService } from './pinjaman.service';
+import { LoanInstallmentService } from './loan-installment.service';
 
-describe('PinjamanService', () => {
-  let service: PinjamanService;
+describe('LoanInstallmentService', () => {
+  let service: LoanInstallmentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PinjamanService);
+    service = TestBed.inject(LoanInstallmentService);
   });
 
   it('should be created', () => {

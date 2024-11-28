@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <div *ngIf="loanInfo">
+                <h2>Detail Pinjaman Untuk ID: {{ loanInfo.id }}</h2>
+                <p><strong>Tanggal Valuta:</strong> {{ loanInfo.disbursement_date }}</p>
+                <p><strong>Tanggal Cicilan Terakhir:</strong> {{ loanInfo.maturity_date }}</p>
+                <p><strong>Bunga:</strong> {{ loanInfo.interest_rate }}</p>
+                <p><strong>Cara Pembayaran:</strong> {{ loanInfo.payment_method }}</p>
+                <p><strong>Cara Hitung Angsuran:</strong> {{ loanInfo.amortization }}</p>
+                <p><strong>Lama Cicilan:</strong> {{ loanInfo.tenor_months }}</p>
+                <p><strong>Jumlah Pinjaman:</strong> {{ formatNumber(loanInfo.amount) }}</p><br>
+                
+            
+                <h3>Data Angsuran</h3>
+                <div class="table-responsive" style="height: 390px; overflow-y: auto;">
+                    <table cTable hover striped>
+                    <thead style="position: sticky; top: 0; z-index: 1; background: white;">
+                        <tr>
+                        <th>Nomor</th>
+                        <th>Tanggal Valuta</th>
+                        <th>Pokok</th>
+                        <th>Bunga</th>
+                        <th>Total Angsuran</th>
+                        <th>Sisa Pinjaman</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let installment of loanInstallments">
+                        <td>{{ installment.number }}</td>
+                        <td>{{ installment.maturity_date }}</td>
+                        <td class="text-right">{{ formatNumber(installment.principal) }}</td>
+                        <td class="text-right">{{ formatNumber(installment.interest) }}</td>
+                        <td class="text-right">{{ formatNumber(installment.paid_instalment) }}</td>
+                        <td class="text-right">{{ formatNumber(installment.principal_balance) }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot style="position: sticky; bottom: 0; z-index: 1; background: white;">
+                        <td></td>
+                        <td>Total</td> 
+                        <td class="text-right">{{ formatNumber(totalPrincipal) }}</td> 
+                        <td class="text-right">{{ formatNumber(totalInterest) }}</td> 
+                        <td class="text-right">{{ formatNumber(totalPaidInstallment) }}</td> 
+                        <td></td>
+                    </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
